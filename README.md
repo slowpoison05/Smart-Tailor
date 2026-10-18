@@ -46,7 +46,7 @@ AI try-on is not active yet. Choose a provider that explicitly supports image ed
 
 ## Important limitations
 
-- The 3D garment is a stylized procedural preview, not a calibrated body scan, realistic cloth simulation, production-ready sewing pattern, or guarantee of garment fit.
+- The 3D avatar is a more detailed procedural model, not a scanned or photorealistic human asset. The garment geometry is still a stylized preview without cloth physics, calibrated body scanning, production-ready sewing patterns, or a guarantee of fit.
 - Client profiles and drafts are stored in the browser's localStorage. They do not sync between devices and are not a shared database. Do not use this prototype to store sensitive client data.
 - The uploaded photo is not persisted with a saved profile.
 - Authentication, cloud database, orders/payments, production sewing-pattern generation, and real AI try-on require additional integrations.
@@ -55,5 +55,5 @@ AI try-on is not active yet. Choose a provider that explicitly supports image ed
 
 - `app/page.tsx` — workspace UI, measurement controls, client profiles, CSV export.
 - `components/Garment3D.tsx` — procedural 3D preview.
-- `app/api/try-on/route.ts` — safe integration boundary for AI try-on.
+- `app/api/try-on/route.ts` — server-side FASHN submission and prediction status polling.
 - `app/globals.css` — responsive styling.
