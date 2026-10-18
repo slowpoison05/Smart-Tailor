@@ -41,16 +41,30 @@ npm start
 3. Leave build and install commands at their defaults.
 4. Deploy from the `main` branch. New commits should trigger deployments when Git integration is enabled.
 
-## Enable AI virtual try-on
+## Free AI virtual try-on (Android-friendly)
 
-The app is integrated with the FASHN `tryon-max` API. To enable real generations:
+This project no longer calls the paid FASHN API. The Next.js site can run on Vercel without a paid AI key. For AI image generation, deploy the companion app in `free-tryon-space/` as your own Hugging Face Gradio Space using the open-source FASHN VTON v1.5 model.
 
-1. Create an account at [FASHN](https://app.fashn.ai/) and enable API credits. Usage is paid; review current pricing before testing.
-2. Create an API key in the FASHN developer dashboard.
-3. For local development, copy `.env.example` to `.env.local` and set `FASHN_API_KEY=your_key`. In Vercel, add `FASHN_API_KEY` under Project Settings → Environment Variables for Preview and Production as needed, then redeploy.
-4. In the app, upload a person photo and a clear garment reference photo, then choose **Generate realistic try-on**. The result is generated asynchronously and shown in the app.
+### Set up the free hosted model
 
-The API key stays server-side. Images are resized in the browser before upload and are sent to FASHN only when the user starts generation. The integration requests base64 output to reduce long-lived provider output URLs, but source photos still leave the browser and are processed by FASHN. Review the provider's current [data retention and privacy terms](https://docs.fashn.ai/api-overview/data-retention-and-privacy) before using real client photos. The generated preview is illustrative; it does not guarantee exact fabric construction or real-world fit.
+1. Sign in to [Hugging Face](https://huggingface.co/). A free account can use eligible ZeroGPU Spaces with a limited daily quota; availability and eligibility may vary.
+2. Create a new **Gradio Space**. Use ZeroGPU for free GPU inference if available to your account. Copy the files from `free-tryon-space/` into that Space's repository and let it build.
+3. Wait for the first model download and startup. The weights are around 2 GB and the app may take time to become ready.
+4. Copy the Space's public HTTPS URL ending in `hf.space`.
+5. In Vercel, set `NEXT_PUBLIC_FREE_TRYON_SPACE_URL` to that URL, then redeploy. The app opens your Space in a new tab.
+6. Re-upload the person photo and garment photo in the Space. Photos are deliberately not passed between sites automatically.
+
+### Cost, hardware and licensing
+
+- No FASHN paid API key or paid API call is used by this project.
+- This is **not unlimited free compute**: ZeroGPU access has a limited quota, queues, cold starts and eligibility rules. The Space can sleep between uses. If free GPU access is unavailable, do not switch to paid hardware unless you choose to.
+- The Android phone is only the browser/client. AI inference runs on Hugging Face's hosted GPU, not on the phone. Local inference on an Android phone is not a realistic target for this model.
+- FASHN VTON v1.5 model is published under Apache-2.0, but review the model repository's third-party component notices and licenses before commercial use. Do not assume every dependency or weight has identical terms.
+- Generated previews can alter garment details and do not guarantee exact tailoring fit.
+
+### Privacy
+
+The Smart Tailor website does not send uploaded photos to the model automatically. When you open your own Space and upload photos there, those images are sent to Hugging Face's hosted runtime for processing. Review Hugging Face's terms and Space visibility settings, and use client photos only with informed consent.
 
 ## Important limitations
 
