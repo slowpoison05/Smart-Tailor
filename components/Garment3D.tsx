@@ -13,7 +13,7 @@ const hair = "#211613";
 export default function Garment3D({ garment, measurements, fit, color }: {
   garment:Garment; measurements:Measurements; fit:string; color:string;
 }) {
-  return <Canvas camera={{position:[0,0.9,5.5],fov:32}} dpr={[1,1.5]} shadows>
+  return <Canvas camera={{position:[0,-0.2,6.4],fov:35}} dpr={[1,1.5]} shadows>
     <color attach="background" args={["#eee7e0"]}/>
     <ambientLight intensity={1.35}/>
     <directionalLight position={[3,5,5]} intensity={2.4} castShadow shadow-mapSize-width={1024} shadow-mapSize-height={1024}/>
@@ -24,7 +24,7 @@ export default function Garment3D({ garment, measurements, fit, color }: {
       <Cloth garment={garment} measurements={measurements} fit={fit} color={color}/>
     </group>
     <ContactShadows position={[0,-1.29,0]} opacity={.24} scale={4.5} blur={2.4}/>
-    <OrbitControls enablePan={false} minDistance={3.6} maxDistance={7} minPolarAngle={.48} maxPolarAngle={2.25}/>
+    <OrbitControls target={[0,-1.2,0]} enablePan={false} minDistance={4.2} maxDistance={8} minPolarAngle={.48} maxPolarAngle={2.25}/>
   </Canvas>;
 }
 
