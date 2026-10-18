@@ -44,6 +44,19 @@ function Cloth({garment,measurements,fit,color}:{garment:Garment;measurements:Me
     for(let r=0;r<rings;r++)for(let s=0;s<seg;s++){const a=r*(seg+1)+s,b=a+seg+1;idx.push(a,b,a+1,b,b+1,a+1);}
     const g=new THREE.BufferGeometry();g.setAttribute("position",new THREE.Float32BufferAttribute(p,3));g.setIndex(idx);g.computeVertexNormals();return g;
   },[garment,measurements,fit]);
-  return <mesh geometry={geometry} castShadow><meshStandardMaterial color={color} roughness={.43} side={THREE.DoubleSide}/></mesh>;
+  const sleeveLength=clamp(measurements.sleeve/10,0,3)*.38;
+  return <group>
+    <mesh geometry={geometry} castShadow><meshStandardMaterial color={color} roughness={.43} side={THREE.DoubleSide}/></mesh>
+    {sleeveLength>.015&&<>
+      <mesh position={[-.36,.78-sleeveLength*.28,0]} rotation={[0,0,-.52]} castShadow>
+        <capsuleGeometry args={[.075,sleeveLength,6,12]}/>
+        <meshStandardMaterial color={color} roughness={.43}/>
+      </mesh>
+      <mesh position={[.36,.78-sleeveLength*.28,0]} rotation={[0,0,.52]} castShadow>
+        <capsuleGeometry args={[.075,sleeveLength,6,12]}/>
+        <meshStandardMaterial color={color} roughness={.43}/>
+      </mesh>
+    </>}
+  </group>;
 }
 function clamp(v:number,min:number,max:number){return Math.max(min,Math.min(max,v));}
