@@ -15,7 +15,7 @@ export default function Home(){
    if(!raw)return;
    const d=JSON.parse(raw);
    if(d.garment&&defaults[d.garment as Garment])setGarment(d.garment);
-   if(d.m&&typeof d.m==="object")setM({...defaults[d.garment as Garment]||defaults.Gown,...d.m});
+   if(d.m&&typeof d.m==="object")setM({...(defaults[d.garment as Garment]||defaults.Gown),...d.m});
    if(["Slim","Regular","Loose"].includes(d.fit))setFit(d.fit);
    if(typeof d.color==="string"&&/^#[0-9a-fA-F]{6}$/.test(d.color))setColor(d.color);
    if(typeof d.fabric==="string")setFabric(d.fabric);
