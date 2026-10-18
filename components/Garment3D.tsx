@@ -51,6 +51,7 @@ function FemaleAvatar({measurements}:{measurements:Measurements}) {
   },[measurements]);
   const skinMat = <meshStandardMaterial color={skin} roughness={.72} metalness={0}/>;
   return <group>
+    <mesh geometry={body} castShadow><meshStandardMaterial color={skin} roughness={.74}/></mesh>
     {/* neck and natural head silhouette */}
     <mesh position={[0,1.13,0]}><capsuleGeometry args={[.09,.20,8,16]}/>{skinMat}</mesh>
     <mesh position={[0,1.48,0]} scale={[.225,.30,.205]} castShadow><sphereGeometry args={[1,40,32]}/><meshStandardMaterial color={skinLight} roughness={.68}/></mesh>
