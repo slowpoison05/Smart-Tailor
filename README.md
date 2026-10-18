@@ -12,8 +12,9 @@ A responsive tailoring workspace for women's blouses, salwar suits, dresses and 
 - Save/restore the active draft in the current browser.
 - Save up to 50 named client profiles locally; load or remove profiles.
 - Export a CSV measurement sheet.
-- Photo upload validation (JPG, PNG, WEBP; up to 12 MB). The selected photo is kept in page memory and is not uploaded by this prototype.
-- Server route reserved for a provider-specific AI try-on adapter; it returns a clear 501 until the adapter is implemented.
+- Photo upload validation (JPG, PNG, WEBP; up to 12 MB) for person and garment photos. Photos stay in browser memory until the user explicitly starts AI try-on.
+- FASHN AI virtual try-on integration with server-side API-key handling, optimized image payloads, async prediction polling and generated-result preview. Requires a FASHN API key and paid credits.
+- A more detailed procedural female avatar with face, hair, hands, legs and measurement-responsive torso proportions.
 
 ## Run locally
 
@@ -40,9 +41,16 @@ npm start
 3. Leave build and install commands at their defaults.
 4. Deploy from the `main` branch. New commits should trigger deployments when Git integration is enabled.
 
-## AI try-on integration
+## Enable AI virtual try-on
 
-AI try-on is not active yet. Choose a provider that explicitly supports image editing/virtual try-on, review its image-retention and privacy terms, then implement its request/response format in `app/api/try-on/route.ts`. Store credentials only as server-side Vercel environment variables; never expose secret keys in `NEXT_PUBLIC_*` variables. The current endpoint deliberately does not return a fake generated image.
+The app is integrated with the FASHN `tryon-max` API. To enable real generations:
+
+1. Create an account at [FASHN](https://app.fashn.ai/) and enable API credits. Usage is paid; review current pricing before testing.
+2. Create an API key in the FASHN developer dashboard.
+3. For local development, copy `.env.example` to `.env.local` and set `FASHN_API_KEY=your_key`. In Vercel, add `FASHN_API_KEY` under Project Settings → Environment Variables for Preview and Production as needed, then redeploy.
+4. In the app, upload a person photo and a clear garment reference photo, then choose **Generate realistic try-on**. The result is generated asynchronously and shown in the app.
+
+The API key stays server-side. Images are resized in the browser before upload and are sent to FASHN only when the user starts generation. The integration requests base64 output to reduce long-lived provider output URLs, but source photos still leave the browser and are processed by FASHN. Review the provider's current [data retention and privacy terms](https://docs.fashn.ai/api-overview/data-retention-and-privacy) before using real client photos. The generated preview is illustrative; it does not guarantee exact fabric construction or real-world fit.
 
 ## Important limitations
 
