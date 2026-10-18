@@ -1,4 +1,3 @@
-"use server";
 import { NextRequest, NextResponse } from "next/server";
 
 const API_BASE = "https://api.fashn.ai/v1";
