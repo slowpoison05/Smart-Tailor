@@ -1,0 +1,4 @@
+gradio>=5.20,<6
+spaces>=0.34
+huggingface_hub>=0.28
+Pillow>=10
