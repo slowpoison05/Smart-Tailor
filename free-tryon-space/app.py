@@ -10,38 +10,29 @@ SOURCE = ROOT / "fashn-vton-1.5"
 WEIGHTS = ROOT / "weights"
 PIPELINE = None
 
-def prepare_model():
-    """Download the open-source model source and weights into this Space runtime."""
-    global PIPELINE
-    if PIPELINE is not None:
-        return PIPELINE
-    if not SOURCE.exists():
-        subprocess.run(
-            ["git", "clone", "--depth", "1", "https://github.com/fashn-AI/fashn-vton-1.5.git", str(SOURCE)],
-            check=True,
-            timeout=180,
-        )
+# Download official inference helper and model weights during Space startup.
+# The package itself is installed at build time from requirements.txt.
+if not SOURCE.exists():
     subprocess.run(
-        [sys.executable, "-m", "pip", "install", "-e", str(SOURCE)],
+        ["git", "clone", "--depth", "1", "https://github.com/fashn-AI/fashn-vton-1.5.git", str(SOURCE)],
         check=True,
-        timeout=600,
+        timeout=180,
     )
-    subprocess.run(
-        [sys.executable, str(SOURCE / "scripts" / "download_weights.py"), "--weights-dir", str(WEIGHTS)],
-        check=True,
-        timeout=900,
-    )
-    sys.path.insert(0, str(SOURCE))
-    from fashn_vton import TryOnPipeline
-    PIPELINE = TryOnPipeline(weights_dir=str(WEIGHTS))
-    return PIPELINE
+subprocess.run(
+    [sys.executable, str(SOURCE / "scripts" / "download_weights.py"), "--weights-dir", str(WEIGHTS)],
+    check=True,
+    timeout=1800,
+)
 
 @spaces.GPU(duration=120)
 def generate(person, garment, category):
+    global PIPELINE
     if person is None or garment is None:
         raise gr.Error("Upload both a full-body person photo and a clear garment photo.")
-    pipeline = prepare_model()
-    result = pipeline(
+    if PIPELINE is None:
+        from fashn_vton import TryOnPipeline
+        PIPELINE = TryOnPipeline(weights_dir=str(WEIGHTS))
+    result = PIPELINE(
         person_image=person.convert("RGB"),
         garment_image=garment.convert("RGB"),
         category=category,
