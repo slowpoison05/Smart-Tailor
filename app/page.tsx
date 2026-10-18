@@ -9,7 +9,7 @@ type ClientRecord={name:string;garment:Garment;m:M;fit:string;color:string;fabri
 const defaults:Record<Garment,M>={Blouse:{bust:36,waist:30,hips:38,shoulder:14,sleeve:10,length:15},"Salwar suit":{bust:36,waist:30,hips:38,shoulder:14,sleeve:10,length:42},Dress:{bust:36,waist:30,hips:38,shoulder:14,sleeve:10,length:40},Gown:{bust:36,waist:30,hips:38,shoulder:14,sleeve:10,length:54}};
 const items:{key:keyof M;label:string;min:number;max:number}[]=[{key:"bust",label:"Bust",min:26,max:60},{key:"waist",label:"Waist",min:20,max:56},{key:"hips",label:"Hips",min:28,max:66},{key:"shoulder",label:"Shoulder",min:10,max:24},{key:"sleeve",label:"Sleeve length",min:0,max:34},{key:"length",label:"Garment length",min:10,max:62}];
 export default function Home(){
- const [garment,setGarment]=useState<Garment>("Gown"),[m,setM]=useState<M>(defaults.Gown),[units,setUnits]=useState<"in"|"cm">("in"),[fit,setFit]=useState("Regular"),[color,setColor]=useState("#8d3555"),[fabric,setFabric]=useState("Silk satin"),[client,setClient]=useState(""),[photo,setPhoto]=useState(""),[notice,setNotice]=useState("");
+ const [garment,setGarment]=useState<Garment>("Gown"),[m,setM]=useState<M>(defaults.Gown),[units,setUnits]=useState<"in"|"cm">("in"),[fit,setFit]=useState("Regular"),[color,setColor]=useState("#8d3555"),[fabric,setFabric]=useState("Silk satin"),[client,setClient]=useState(""),[photo,setPhoto]=useState(""),[notice,setNotice]=useState(""),[clients,setClients]=useState<ClientRecord[]>([]);
  useEffect(()=>{
   try {
    const storedClients=localStorage.getItem("smart-tailor-clients");
