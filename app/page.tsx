@@ -12,7 +12,9 @@ export default function Home(){
  const [garment,setGarment]=useState<Garment>("Gown"),[m,setM]=useState<M>(defaults.Gown),[units,setUnits]=useState<"in"|"cm">("in"),[fit,setFit]=useState("Regular"),[color,setColor]=useState("#8d3555"),[fabric,setFabric]=useState("Silk satin"),[client,setClient]=useState(""),[photo,setPhoto]=useState(""),[notice,setNotice]=useState("");
  useEffect(()=>{
   try {
-   const storedClients=localStorage.getItem("smart-tailor-clients");\n   if(storedClients){const parsed=JSON.parse(storedClients);if(Array.isArray(parsed))setClients(parsed);}\n   const raw=localStorage.getItem("smart-tailor-draft");
+   const storedClients=localStorage.getItem("smart-tailor-clients");
+   if(storedClients){const parsed=JSON.parse(storedClients);if(Array.isArray(parsed))setClients(parsed);}
+   const raw=localStorage.getItem("smart-tailor-draft");
    if(!raw)return;
    const d=JSON.parse(raw);
    if(d.garment&&defaults[d.garment as Garment])setGarment(d.garment);
